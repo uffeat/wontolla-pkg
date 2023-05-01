@@ -1,6 +1,10 @@
-import { useState } from "./state.js";
+import { config } from "./config.js";
+import { state, useState } from "./state.js";
 import * as _nav from "./components/components/nav.js";
 import * as _navbar from "./components/components/navbar.js";
+import { show as showToast } from "./components/components/toast.js";
+
+
 
 // Generic state render funcs
 
@@ -19,6 +23,32 @@ function showOnLoggedin(value) {
     this.hide();
   }
 }
+
+// Explicitly create logout link
+
+const logoutLink = useState(
+  "loggedin",
+  createElement("a", {
+    name: "logout",
+    text: "Log out",
+  }),
+  showOnLoggedin
+)
+logoutLink.onclick = (event) => {
+  event.preventDefault()
+  event.stopPropagation()
+  let msg
+  if (config.dev) {
+    msg = `Logged out`
+  } else {
+    msg = `${state.getValue('user')} logged out.`
+  }
+  window.sendEvent("x-logout")
+  state.setValue("loggedin", false);
+  showToast(msg, {headline: "Log-out success", styleName: 'success'})
+}
+
+//window.sendEvent("x-login"
 
 // Create complete navbar component
 
@@ -76,13 +106,7 @@ const navBar = createElement(
       }),
       showOnLoggedin
     ),
-    useState(
-      "loggedin",
-      createElement("a", {
-        name: "logout",
-        text: "Log out",
-      }),
-      showOnLoggedin
-    )
+    logoutLink
   )
 );
+

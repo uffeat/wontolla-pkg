@@ -20,6 +20,8 @@ document.footer = document.createElement('footer')
 document.root.append(document.header, document.main, document.footer)
 
 
+// GLOBAL FUNCS
+
 // Html
 
 /** */
@@ -37,7 +39,11 @@ window.getHtml = getHtml;
 
 // Function tools
 
-const checkKwargs = (kwargs, ...validKeys) => {
+/*
+// handleKwargs is a nifty idea, but probably overkill.
+// If to be implemented, maybe justify its use by adding a type-checking feature?
+
+const handleKwargs = (kwargs, ...validKeys) => {
   if (kwargs) {
     if (validKeys.length > 0) {
       // Check keys.
@@ -53,23 +59,9 @@ const checkKwargs = (kwargs, ...validKeys) => {
   }
 };
 
-window.checkKwargs = checkKwargs;
+window.handleKwargs = handleKwargs;
+*/
 
-const getArgs = (kwargs, ...keys) => {
-  if (!kwargs) return;
-  if (keys.length === 0) return;
-  // Operate on shallow copy of kwargs.
-  kwargs = { ...kwargs };
-
-  // Check keys.
-  const invalidKeys = Object.keys(kwargs).filter((key) => !keys.includes(key));
-  if (invalidKeys.length > 0) {
-    throw Error(`Invalid arg: ${invalidKeys}.`);
-  }
-  return keys.map((key) => kwargs[key]);
-};
-
-window.getArgs = getArgs;
 
 // Promise tools
 
@@ -111,7 +103,6 @@ const createElementFromHtml = (html, props = {}) => {
   // Creates HTML element from 'outer' HTML with options,
   // add to parent and attach shadow root.
 
-  const [parent, shadow = false] = X.getArgs(kwargs, "parent", "shadow");
 
   html = getHtml(html);
   let element;

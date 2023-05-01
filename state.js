@@ -47,6 +47,10 @@ class State {
       return
     }
     this.#subscribers[key].forEach(func => func(this.getValue(key)))
+
+    // Perhaps dispach event (with detail) on window to notify Anvil.
+    // Return event so that caller can read "returned" detail.
+    // Maybe wrap in `requestSetValue` method?
   }
 
   static #checkKey(key) {

@@ -44,7 +44,7 @@ class Alert extends mixin(HTMLElement) {
   }
 
   show(content, kwargs = {}) {
-    const [headline, styleName] = getArgs(kwargs, "headline", "styleName");
+    const {headline, styleName} = kwargs
     this.content = content;
     if (headline) this.headline = headline;
     if (styleName) this.styleName = styleName;

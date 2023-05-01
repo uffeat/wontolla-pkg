@@ -1,3 +1,3 @@
-const config = {local: true}
+const config = {dev: true}
 
 export {config}

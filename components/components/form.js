@@ -1,7 +1,7 @@
 import { mixin } from "../utils/mixin.js";
 import { composeSubs } from "../compositions/subs.js";
 import { composeRoot } from "../compositions/root.js";
-import * as _alert from "./alert.js";
+import * as _alert from "../components/alert.js";
 
 class Form extends mixin(HTMLElement) {
   #action;

@@ -1,6 +1,7 @@
 import { config } from "../config.js";
 import { state } from "../state.js";
 import * as _form from "../components/components/form.js";
+import { show as showToast } from "../components/components/toast.js";
 import * as _textInput from "../components/components/text-input.js";
 import { composeSubs } from "../components/compositions/subs.js";
 
@@ -41,7 +42,7 @@ component.subs.form.action = (form) => {
     password: passwordComponent.value,
   });
 
-  if (event.detail.valid === false) {
+  if (event.detail.success === false) {
     console.log(`Invalid credentials.`);
     emailComponent.customValidity = passwordComponent.customValidity =
       "Invalid credentials";
@@ -50,35 +51,35 @@ component.subs.form.action = (form) => {
       emailComponent.customValidity = passwordComponent.customValidity = true;
     };
 
-    form.alert.show("Invalid credentials", {headline: 'Something went wrong', styleName: 'danger'});
+    const msg = event.detail.msg || "Invalid credentials"
+    form.alert.show(msg, {headline: 'Something went wrong', styleName: 'danger'});
 
     form.validate();
     return;
   }
 
+  showToast(`${emailComponent.value} is logged in.`, {headline: "Log-in success", styleName: 'success'})
+  // Reset form (in case of logout-login)
   form.resetValidation();
   form.clearData()
-  console.log(`Form is valid.`);
+  // Set global state
   state.setValue("loggedin", true);
-  // Return to previous view:
+  // Return to previous page after delay
   setTimeout(() => {
     window.history.back()
-  }, "1000");
+  }, "800");
 };
 
-// Dummy validation for dev
-if (config.local) {
-
-  console.log('config local')
-
-
+// Dummy for dev
+if (config.dev) {
   window.addEventListener("x-login", (event) => {
     const email = event.detail.email
     console.log(email)
     const password = event.detail.password
     console.log(password)
     if (email !== "w@w" || password !== "w") {
-      event.detail.valid = false
+      event.detail.success = false
+      event.detail.msg = 'Oh, no!!!'
     }
   })
 }

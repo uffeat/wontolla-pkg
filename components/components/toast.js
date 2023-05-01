@@ -1,14 +1,8 @@
-import { Toast } from 'bootstrap'
 import { composeSubs } from "../compositions/subs.js";
 import { setStyle } from "../../libs/bootstrap/utils/classes.js";
 
-const showToast = (content, kwargs = {}) => {
-  const [headline = "", styleName = "primary", delay = 5000] = X.getArgs(
-    kwargs,
-    "headline",
-    "styleName",
-    "delay"
-  );
+const show = (content, kwargs = {}) => {
+  const {headline = "", styleName = "primary", delay = 5000} = kwargs
 
   let container = document.get("div.toast-container");
   if (!container) {
@@ -25,7 +19,7 @@ const showToast = (content, kwargs = {}) => {
   component.subs.headline.text = headline;
   component.subs.body.text = content;
 
-  const bsComponent = new Toast(component, { delay: delay });
+  const bsComponent = new bootstrap.Toast(component, { delay: delay });
 
   component.addEventListener("hidden.bs.toast", (event) => {
     event.stopPropagation();
@@ -39,7 +33,7 @@ const showToast = (content, kwargs = {}) => {
   bsComponent.show();
 };
 
-export { showToast };
+export { show };
 
 
 /*

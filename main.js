@@ -1,12 +1,9 @@
 // Expand global namespace and enhance prototypes
-import * as _upgrade from './upgrade.js'
+import * as _upgrade from "./upgrade.js";
 // Build ui frame
-import * as _app from './app.js'
+import * as _app from "./app.js";
 // Init routes and router
-import * as _routes from './router/routes.js'
+import * as _routes from "./router/routes.js";
 
-import { config } from './config.js'
-
-export {config}
-
-
+export { config } from "./config.js";
+export {state} from './state.js'
