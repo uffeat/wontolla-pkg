@@ -6,4 +6,3 @@ import * as _app from "./app.js";
 import * as _routes from "./router/routes.js";
 
 export { config } from "./config.js";
-export {state} from './state.js'

@@ -37,10 +37,8 @@ class State {
 
   setValue(key, value) {
 
-    console.log(`setValue got value ${value} for key ${key}`)
-
-
-
+    //console.log(`setValue got value ${value} for key ${key}`)
+   
     State.#checkKey(key)
     this.#data[key] = value;
     const selector = `*[${key.toKebab()}-subscriber]`
@@ -53,9 +51,11 @@ class State {
     }
     this.#subscribers[key].forEach(func => func(this.getValue(key)))
 
-    // Perhaps dispach event (with detail) on window to notify Anvil.
-    // Return event so that caller can read "returned" detail.
-    // Maybe wrap in `requestSetValue` method?
+
+    console.log(`Sending event x-${key.toKebab()} with detail ${value}`)
+    
+    let event = window.sendEvent(`x-${key.toKebab()}`, value);
+    return event.detail
   }
 
   static #checkKey(key) {

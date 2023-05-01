@@ -37,6 +37,8 @@ component.subs.form.action = (form) => {
 
   // Credentials validation.
 
+  // Dispatch event to notify Anvil
+  // TODO Could state be used instead?
   let event = window.sendEvent("x-login", {
     email: emailComponent.value,
     password: passwordComponent.value,
@@ -59,11 +61,12 @@ component.subs.form.action = (form) => {
   }
 
   showToast(`${emailComponent.value} is logged in.`, {headline: "Log-in success", styleName: 'success'})
+  // Set global state
+  state.setValue("loggedin", true);
+  state.setValue("user", {email: emailComponent.value});
   // Reset form (in case of logout-login)
   form.resetValidation();
   form.clearData()
-  // Set global state
-  state.setValue("loggedin", true);
   // Return to previous page after delay
   setTimeout(() => {
     window.history.back()
@@ -72,6 +75,10 @@ component.subs.form.action = (form) => {
 
 // Dummy for dev
 if (config.dev) {
+
+  console.log('DEV MODE')
+
+
   window.addEventListener("x-login", (event) => {
     const email = event.detail.email
     console.log(email)

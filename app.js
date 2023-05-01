@@ -37,14 +37,24 @@ const logoutLink = useState(
 logoutLink.onclick = (event) => {
   event.preventDefault()
   event.stopPropagation()
+
+  const user = state.getValue("user")
+
+  
+
+
   let msg
-  if (config.dev) {
-    msg = `Logged out`
+  if (user.email) {
+    msg = `${user.email} logged out.`
   } else {
-    msg = `${state.getValue('user')} logged out.`
+    msg = `Logged out`
   }
+
   window.sendEvent("x-logout")
+
   state.setValue("loggedin", false);
+  state.setValue("user", null);
+
   showToast(msg, {headline: "Log-out success", styleName: 'success'})
 }
 
