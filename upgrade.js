@@ -1,5 +1,11 @@
 import { assets } from "./assets.js";
 
+function stuff() {
+  
+}
+
+console.log('running')
+
 // ALIASES
 
 Element.prototype.get = Element.prototype.querySelector;
@@ -370,3 +376,6 @@ String.prototype.toKebab = function() {
   return toKebab(this)
 }
 
+
+
+export {stuff}
