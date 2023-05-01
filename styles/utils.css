@@ -1,0 +1,73 @@
+/* UTILS: WIDTH */
+
+.max-width-md {
+  max-width: 720px;
+}
+
+.max-width-lg {
+  max-width: 940px;
+}
+
+.max-width-xl {
+  max-width: 1140px;
+}
+
+/* UTILS: FLEXBOX */
+
+.column-gap-1 {
+  column-gap: var(--space1);
+}
+
+.column-gap-2 {
+  column-gap: var(--space2);
+}
+
+.column-gap-3 {
+  column-gap: var(--space3);
+}
+
+.column-gap-4 {
+  column-gap: var(--space4);
+}
+
+.row-gap-5 {
+  row-gap: var(--space5);
+}
+
+.row-gap-1 {
+  row-gap: var(--space1);
+}
+
+.row-gap-2 {
+  row-gap: var(--space2);
+}
+
+.row-gap-3 {
+  row-gap: var(--space3);
+}
+
+.row-gap-4 {
+  row-gap: var(--space4);
+}
+
+.row-gap-5 {
+  row-gap: var(--space5);
+}
+
+/* UTILS: DEV */
+
+.bisque {
+  background-color: bisque;
+}
+
+.green {
+  background-color: green;
+}
+
+.linen {
+  background-color: linen;
+}
+
+.pink {
+  background-color: pink;
+}

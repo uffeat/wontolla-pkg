@@ -1,0 +1,37 @@
+@import url("utils.css");
+@import url("components.css");
+
+:root {
+  --space1: 0.25rem;
+  --space2: 0.5rem;
+  --space3: 1rem; 
+  --space4: 1.5rem;
+  --space5: 3rem;
+}
+
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* LINK */
+
+a {
+  cursor: pointer;
+}
+
+/* NUMBER INPUT */
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+

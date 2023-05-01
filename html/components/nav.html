@@ -1,0 +1,15 @@
+<style>
+  @media (max-width: 769px) {
+    :host([collapsible]) nav {
+      flex-direction: column;
+    }
+  }
+
+  :host([vertical]) nav {
+    flex-direction: column;
+  }
+</style>
+
+<nav class="nav" data-x="nav">
+  <slot data-x="slot"></slot>
+</nav>
