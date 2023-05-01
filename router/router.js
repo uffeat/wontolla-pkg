@@ -3,14 +3,21 @@ import { FuncStore } from "../utils/func-store.js";
 
 const routes = new FuncStore();
 
-const onhashchange = (event) => {
+const onhashchange = (event, defaultKey) => {
   const result = parseLocationHash();
-  if (!result) return
+  if (!result) {
+    window.location.hash = defaultKey || ''
+    return
+  }
   const { key, query: kwargs, params: args = [] } = result;
   if (key) {
     if (!routes.get(result.key)) {
+
+      // TODO Error page
       console.log(`Invalid route key: ${key}`);
       return;
+
+
     }
     routes.run(key, kwargs, ...args);
     return true;

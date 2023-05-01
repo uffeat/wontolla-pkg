@@ -1,3 +1,4 @@
+import { config } from "../config.js";
 import { state } from "../state.js";
 import * as _form from "../components/components/form.js";
 import * as _textInput from "../components/components/text-input.js";
@@ -22,7 +23,7 @@ const passwordComponent = createElement("x-text-input.col-md-6", {
   required: true,
 });
 
-component.subs.form.add(emailComponent, passwordComponent);
+component.subs.form.addControl(emailComponent, passwordComponent);
 component.subs.form.showValid = false;
 
 component.subs.form.action = (form) => {
@@ -35,7 +36,7 @@ component.subs.form.action = (form) => {
 
   // Credentials validation.
 
-  let event = window.sendEvent("validate-credentials", {
+  let event = window.sendEvent("x-login", {
     email: emailComponent.value,
     password: passwordComponent.value,
   });
@@ -49,45 +50,39 @@ component.subs.form.action = (form) => {
       emailComponent.customValidity = passwordComponent.customValidity = true;
     };
 
-    form.alert.show("Invalid credentials");
+    form.alert.show("Invalid credentials", {headline: 'Something went wrong', styleName: 'danger'});
 
     form.validate();
     return;
   }
-
-  // Dummy validation for dev
-  /*
-  if (emailComponent.value !== "a@a" || passwordComponent.value !== "a") {
-    console.log(`Invalid credentials.`);
-    emailComponent.customValidity = passwordComponent.customValidity =
-      "Invalid credentials";
-
-    emailComponent.customOnInput = passwordComponent.customOnInput = () => {
-      emailComponent.customValidity = passwordComponent.customValidity = true;
-    };
-
-    form.alert.show("Invalid credentials");
-
-    form.validate();
-    return;
-  }
-  */
 
   form.resetValidation();
+  form.clearData()
   console.log(`Form is valid.`);
   state.setValue("loggedin", true);
+  // Return to previous view:
+  setTimeout(() => {
+    window.history.back()
+  }, "1000");
 };
 
-/*
-window.addEventListener("validate-credentials", (event) => {
-  const email = event.detail.email
-  console.log(email)
-  const password = event.detail.password
-  console.log(password)
-  if (email !== "w@w" || password !== "w") {
-    event.detail.valid = false
-  }
-})
-*/
+// Dummy validation for dev
+if (config.local) {
+
+  console.log('config local')
+
+
+  window.addEventListener("x-login", (event) => {
+    const email = event.detail.email
+    console.log(email)
+    const password = event.detail.password
+    console.log(password)
+    if (email !== "w@w" || password !== "w") {
+      event.detail.valid = false
+    }
+  })
+}
+
+
 
 export { component };

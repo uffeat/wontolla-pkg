@@ -78,7 +78,7 @@ class Form extends mixin(HTMLElement) {
     throw `'valid' is read-only.`;
   }
 
-  add(...controls) {
+  addControl(...controls) {
     controls = controls.map((control) => {
       control.classList.add("x-control", "col-md-6");
       return control;
@@ -86,8 +86,14 @@ class Form extends mixin(HTMLElement) {
     this.subs.form.append(...controls);
   }
 
-  clear() {
+  clearControls() {
     this.subs.form.clear();
+  }
+
+  clearData() {
+    this.controls.forEach((control) => {
+     control.value = null
+    });
   }
 
   getControl(name) {
