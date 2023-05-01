@@ -36,6 +36,11 @@ class State {
   }
 
   setValue(key, value) {
+
+    console.log(`setValue got value ${value} for key ${key}`)
+
+
+
     State.#checkKey(key)
     this.#data[key] = value;
     const selector = `*[${key.toKebab()}-subscriber]`
