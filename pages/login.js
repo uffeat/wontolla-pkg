@@ -36,6 +36,10 @@ component.subs.form.action = (form) => {
 
   // Credentials validation.
 
+  if (user) {
+    
+  }
+
   if (emailComponent.value !== "a@a" || passwordComponent.value !== "a") {
     console.log(`Invalid credentials.`);
     emailComponent.customValidity = passwordComponent.customValidity =

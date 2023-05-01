@@ -58,4 +58,13 @@ class State {
 
 const state = new State()
 
-export {state}
+
+const useState = (name, element, func) => {
+  element.setAttr(`${name.toKebab()}-subscriber`);
+  const methodName = `render${name.toCamel().capitalize()}`
+  element[methodName] = func
+  element[methodName](state.getValue(name))
+  return element
+}
+
+export {state, useState}

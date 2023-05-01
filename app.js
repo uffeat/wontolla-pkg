@@ -1,92 +1,88 @@
+import { useState } from "./state.js";
 import * as _nav from "./components/components/nav.js";
 import * as _navbar from "./components/components/navbar.js";
 
-const auxNav = createElement("x-nav", { slot: "aux" });
+// Generic state render funcs
 
-const signupLink = createElement("a", {
-  name: "signup",
-  href: "#signup",
-  text: "Sign up",
-  parent: auxNav,
-});
-signupLink.setAttr("loggedin-subscriber");
-signupLink.renderLoggedin = (value) => {
+function hideOnLoggedin(value) {
   if (value === true) {
-    signupLink.hide()
+    this.hide();
   } else {
-    signupLink.show()
+    this.show();
   }
-};
-signupLink.renderLoggedin()
+}
 
-
-const loginLink = createElement("a", {
-  name: "login",
-  href: "#login",
-  text: "Log in",
-  parent: auxNav,
-});
-loginLink.setAttr("loggedin-subscriber");
-loginLink.renderLoggedin = (value) => {
+function showOnLoggedin(value) {
   if (value === true) {
-    loginLink.hide()
+    this.show();
   } else {
-    loginLink.show()
+    this.hide();
   }
-};
-loginLink.renderLoggedin()
+}
 
-
-const accountLink = createElement("a", {
-  name: "account",
-  href: "#account",
-  text: "Account",
-  parent: auxNav,
-});
-accountLink.setAttr("loggedin-subscriber");
-accountLink.renderLoggedin = (value) => {
-  if (value === true) {
-    accountLink.show()
-  } else {
-    accountLink.hide()
-  }
-};
-accountLink.renderLoggedin()
-
-
-const logoutLink = createElement("a", {
-  name: "logout",
-  text: "Log out",
-  parent: auxNav,
-}); // No href
-logoutLink.setAttr("loggedin-subscriber");
-logoutLink.renderLoggedin = (value) => {
-  if (value === true) {
-    logoutLink.show()
-  } else {
-    logoutLink.hide()
-  }
-};
-logoutLink.renderLoggedin()
-
-const mainNav = createElement("x-nav", { slot: "main" });
-mainNav.links.add("blog", { href: "#blog", text: "Blog" });
-mainNav.links.add("newsletter", {
-  href: "#newsletter-signup",
-  text: "Newsletter",
-});
-mainNav.links.add("about", { href: "#about", text: "About" });
+// Create complete navbar component
 
 const navBar = createElement(
   "x-navbar",
   { parent: document.root.get("header") },
+  // home link
   createElement("a.nav-link.me-auto.ps-3", {
     href: "#home",
     text: "Home",
     slot: "home",
   }),
-  auxNav,
-  mainNav
+  // main nav
+  createElement(
+    "x-nav",
+    { slot: "main" },
+    // main nav links
+    createElement("a", { name: "blog", href: "#blog", text: "Blog" }),
+    createElement("a", {
+      name: "newsletter",
+      href: "#newsletter-signup",
+      text: "Newsletter",
+    }),
+    createElement("a", { name: "about", href: "#about", text: "About" })
+  ),
+  // aux nav
+  createElement(
+    "x-nav",
+    { slot: "aux" },
+    // aux nav links (stateful)
+    useState(
+      "loggedin",
+      createElement("a", {
+        name: "signup",
+        href: "#signup",
+        text: "Sign up",
+      }),
+      hideOnLoggedin
+    ),
+    useState(
+      "loggedin",
+      createElement("a", {
+        name: "login",
+        href: "#login",
+        text: "Log in",
+      }),
+      hideOnLoggedin
+    ),
+    useState(
+      "loggedin",
+      createElement("a", {
+        name: "account",
+        href: "#account",
+        text: "Account",
+      }),
+      showOnLoggedin
+    ),
+    useState(
+      "loggedin",
+      createElement("a", {
+        name: "logout",
+        text: "Log out",
+      }),
+      showOnLoggedin
+    )
+  )
 );
-
-
