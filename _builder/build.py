@@ -21,6 +21,13 @@ def build():
             value = path.read_text()
             assets[key] = value
 
+    # Build pages html assets.
+    for path in Path(f"{project}/html/pages/").glob("*.*"):
+        if path.suffix == ".html":
+            key = f"pages/{path.name}"
+            value = path.read_text()
+            assets[key] = value
+
 
 
     # NOTE: Storage of stylesheet CSS in `assets` is intended for constructing 
