@@ -51,9 +51,9 @@ class State {
     }
     this.#subscribers[key].forEach(func => func(this.getValue(key)))
 
-
+    // Dispatch event to notify Anvil
+    // TODO Perhaps wrsp in requestSetValue?
     console.log(`Sending event x-${key.toKebab()} with detail ${value}`)
-    
     let event = window.sendEvent(`x-${key.toKebab()}`, value);
     return event.detail
   }
