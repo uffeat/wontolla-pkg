@@ -35,42 +35,59 @@ component.subs.form.action = (form) => {
 
   // Credentials validation.
 
-  if (user) {
-    if (!user.login(emailComponent.value, passwordComponent.value)) {
-      console.log(`Invalid credentials.`);
-      emailComponent.customValidity = passwordComponent.customValidity =
-        "Invalid credentials";
+  let event = window.sendEvent("validate-credentials", {
+    email: emailComponent.value,
+    password: passwordComponent.value,
+  });
 
-      emailComponent.customOnInput = passwordComponent.customOnInput = () => {
-        emailComponent.customValidity = passwordComponent.customValidity = true;
-      };
+  if (event.detail.valid === false) {
+    console.log(`Invalid credentials.`);
+    emailComponent.customValidity = passwordComponent.customValidity =
+      "Invalid credentials";
 
-      form.alert.show("Invalid credentials");
+    emailComponent.customOnInput = passwordComponent.customOnInput = () => {
+      emailComponent.customValidity = passwordComponent.customValidity = true;
+    };
 
-      form.validate();
-      return;
-    }
-  } else {
-    // Dummy validation for dev
-    if (emailComponent.value !== "a@a" || passwordComponent.value !== "a") {
-      console.log(`Invalid credentials.`);
-      emailComponent.customValidity = passwordComponent.customValidity =
-        "Invalid credentials";
-  
-      emailComponent.customOnInput = passwordComponent.customOnInput = () => {
-        emailComponent.customValidity = passwordComponent.customValidity = true;
-      };
-  
-      form.alert.show("Invalid credentials");
-  
-      form.validate();
-      return;
-    }
+    form.alert.show("Invalid credentials");
+
+    form.validate();
+    return;
   }
+
+  // Dummy validation for dev
+  /*
+  if (emailComponent.value !== "a@a" || passwordComponent.value !== "a") {
+    console.log(`Invalid credentials.`);
+    emailComponent.customValidity = passwordComponent.customValidity =
+      "Invalid credentials";
+
+    emailComponent.customOnInput = passwordComponent.customOnInput = () => {
+      emailComponent.customValidity = passwordComponent.customValidity = true;
+    };
+
+    form.alert.show("Invalid credentials");
+
+    form.validate();
+    return;
+  }
+  */
 
   form.resetValidation();
   console.log(`Form is valid.`);
   state.setValue("loggedin", true);
 };
+
+/*
+window.addEventListener("validate-credentials", (event) => {
+  const email = event.detail.email
+  console.log(email)
+  const password = event.detail.password
+  console.log(password)
+  if (email !== "w@w" || password !== "w") {
+    event.detail.valid = false
+  }
+})
+*/
 
 export { component };

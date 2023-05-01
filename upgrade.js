@@ -300,6 +300,7 @@ function sendEvent(name, detail) {
 
 HTMLElement.prototype.sendEvent = sendEvent;
 ShadowRoot.prototype.sendEvent = sendEvent;
+window.sendEvent = sendEvent
 
 // COMPOSITION WITH CLASSES
 
