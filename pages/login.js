@@ -57,6 +57,9 @@ component.subs.form.action = (form) => {
       emailComponent.customValidity = passwordComponent.customValidity = true;
     };
 
+
+
+    //
     const msg = event.detail.msg || "Invalid credentials"
     form.alert.show(msg, {headline: 'Something went wrong', styleName: 'danger'});
 

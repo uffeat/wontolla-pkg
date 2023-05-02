@@ -5,27 +5,36 @@ import * as _upgrade from "./upgrade.js";
 // Init routes and router
 //import * as _routes from "./router/routes.js";
 
-const button = createElement('button', {text: 'Run Python func', parent: document.main})
+const button = createElement("button", {
+  text: "Run Python func",
+  parent: document.main,
+});
 
-let storedValue
+let storedValue;
 const getValue = () => {
-  return storedValue
-}
+  return storedValue;
+};
 const setValue = (value) => {
-  storedValue = value
-  console.log(`Value set: ${storedValue}. Type: ${typeof storedValue}`)
-}
+  storedValue = value;
+  console.log(`Value set: ${storedValue}. Type: ${typeof storedValue}`);
+};
 
-const runPy = (name, ...args) => {
-  const event = window.sendEvent('run-py', {name: name, args: args})
-  return event.result
-}
+const runPy = (name, callback, ...args) => {
+  window.sendEvent("run-py", {
+    name: name,
+    callback: callback,
+    args: args,
+  });
+};
 
 button.onclick = () => {
-  const result = runPy('double', 42)
-  console.log(`JS got result: ${result}`)
-}
+  runPy(
+    "double",
+    (result) => {
+      console.log(`JS got result: ${result}`);
+    },
+    42
+  );
+};
 
-
-
-export {getValue, setValue}
+export { getValue, setValue };
