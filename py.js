@@ -3,10 +3,11 @@ import { config } from "./config.js";
 class Py {
   constructor() {}
 
-  call(name, kwargs) {
+  call(name, detail = {}) {
     const eventName = `x-py-${name}`;
-    let event = window.sendEvent(eventName, kwargs);
-    return event?.detail?.response;
+    detail.response = {success: null, data: null, msg: null}
+    let event = window.sendEvent(eventName, detail);
+    return event.detail.response;
   }
 }
 
@@ -23,9 +24,11 @@ if (config.dev) {
     const password = event.detail.password;
     //console.log(password)
     if (email !== "w@w" || password !== "w") {
-      event.detail.response = { success: false, msg: "Oh, no!!!" };
+      event.detail.response.success = false
+      event.detail.response.msg = "Oh, no!!!"
     } else {
-      event.detail.response = { success: true, msg: "All good." };
+      event.detail.response.success = true
+      event.detail.response.msg = "All good."
     }
   });
 

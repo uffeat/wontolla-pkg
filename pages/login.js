@@ -44,6 +44,8 @@ component.subs.form.action = (form) => {
     password: passwordComponent.value,
   })
 
+  console.log(`login.js got response: ${JSON.stringify(response)}`)
+
 
 
   if (response.success === false) {

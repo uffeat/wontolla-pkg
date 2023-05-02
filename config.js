@@ -1,3 +1,3 @@
-const config = {dev: true}
+const config = {dev: false}
 
 export {config}
