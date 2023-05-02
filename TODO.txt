@@ -1,1 +1,0 @@
-If Anvil can read\write state, wrap window event dispatches in state object
