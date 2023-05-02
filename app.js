@@ -40,9 +40,6 @@ logoutLink.onclick = (event) => {
 
   const user = state.getValue("user")
 
-  
-
-
   let msg
   if (user.email) {
     msg = `${user.email} logged out.`

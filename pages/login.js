@@ -38,7 +38,6 @@ component.subs.form.action = (form) => {
   // Credentials validation.
 
   // Dispatch event to notify Anvil
-  // TODO Could state be used instead?
   let event = window.sendEvent("x-login", {
     email: emailComponent.value,
     password: passwordComponent.value,
