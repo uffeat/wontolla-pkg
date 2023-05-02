@@ -1,5 +1,4 @@
 import { config } from "../config.js";
-import { py } from "../py.js";
 import { state } from "../state.js";
 import * as _form from "../components/components/form.js";
 import { show as showToast } from "../components/components/toast.js";
@@ -39,14 +38,12 @@ component.subs.form.action = (form) => {
   // Credentials validation.
 
   // Dispatch event to notify Anvil
-  let response = py.call('login', {
+  let event = window.sendEvent("x-login", {
     email: emailComponent.value,
     password: passwordComponent.value,
-  })
+  });
 
-
-
-  if (response.success === false) {
+  if (event.detail.success === false) {
     console.log(`Invalid credentials.`);
     emailComponent.customValidity = passwordComponent.customValidity =
       "Invalid credentials";
@@ -75,7 +72,23 @@ component.subs.form.action = (form) => {
   }, "800");
 };
 
+// Dummy for dev
+if (config.dev) {
 
+  console.log('DEV MODE')
+
+
+  window.addEventListener("x-login", (event) => {
+    const email = event.detail.email
+    console.log(email)
+    const password = event.detail.password
+    console.log(password)
+    if (email !== "w@w" || password !== "w") {
+      event.detail.success = false
+      event.detail.msg = 'Oh, no!!!'
+    }
+  })
+}
 
 
 
