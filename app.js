@@ -1,4 +1,5 @@
 import { config } from "./config.js";
+import { py } from "./py.js";
 import { state, useState } from "./state.js";
 import * as _nav from "./components/components/nav.js";
 import * as _navbar from "./components/components/navbar.js";
@@ -47,7 +48,7 @@ logoutLink.onclick = (event) => {
     msg = `Logged out`
   }
 
-  window.sendEvent("x-logout")
+  py.call("logout")
 
   state.setValue("loggedin", false);
   state.setValue("user", null);
@@ -55,7 +56,6 @@ logoutLink.onclick = (event) => {
   showToast(msg, {headline: "Log-out success", styleName: 'success'})
 }
 
-//window.sendEvent("x-login"
 
 // Create complete navbar component
 
