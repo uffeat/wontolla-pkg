@@ -13,12 +13,80 @@ document.getAll = document.querySelectorAll;
 
 document.root = document.getElementById("appGoesHere");
 
-document.header = document.createElement('header')
-document.main = document.createElement('main')
-document.footer = document.createElement('footer')
+document.header = document.createElement("header");
+document.main = document.createElement("main");
+document.footer = document.createElement("footer");
 
-document.root.append(document.header, document.main, document.footer)
+document.root.append(document.header, document.main, document.footer);
 
+// STYLE
+
+/** Adds "stylesheets" to document or a shadow root. */
+function addSheets(...paths) {
+  for (let path of paths) {
+    if (!path.endsWith(".css")) {
+      path = `${path}.css`;
+    }
+    // `_assets` is an object with `path` keys and CSS text as values.
+    if (!(path in assets)) {
+      throw new Error(`Invalid assets path: \`${path}\`.`);
+    }
+    const cssText = assets[path];
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(cssText);
+    //sheet.replace(cssText);
+    this.adoptedStyleSheets = [...this.adoptedStyleSheets, sheet];
+  }
+}
+
+// Add `addSheets` as a method of `ShadowRoot.prototype`
+ShadowRoot.prototype.addSheets = addSheets;
+// Add `addSheets` as a method of document
+document.addSheets = addSheets.bind(document);
+
+/** Useful for adding small component-specific css snippets to document
+ * Should be invoked from component module. */
+document.addCss = (cssText) => {
+  const sheet = new CSSStyleSheet();
+  sheet.replaceSync(cssText);
+  document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+};
+
+// Add global styles
+document.addSheets(
+  "uikit/core",
+  "uikit/custom",
+  "bootstrap/core",
+  "bootstrap/custom",
+  "styles/app",
+  "styles/utils",
+  "styles/components"
+);
+
+// SCRIPTS
+
+const addedScripts = []
+
+const addScripts = (...paths) => {
+  for (let path of paths) {
+    if (!path.endsWith(".js")) {
+      path = `${path}.js`;
+    }
+    if (!(path in assets)) {
+      throw new Error(`Invalid assets path: \`${path}\`.`);
+    }
+    if (addedScripts.includes(path)) {
+      console.log(`Script '${path}' already added.`)
+    }
+    new Function(assets[path])();
+    addedScripts.push(path)
+  }
+};
+
+document.addScripts = addScripts;
+
+// Add global lib scripts
+document.addScripts('uikit/core', 'uikit/icons', "bootstrap/core");
 
 // GLOBAL FUNCS
 
@@ -62,7 +130,6 @@ const handleKwargs = (kwargs, ...validKeys) => {
 window.handleKwargs = handleKwargs;
 */
 
-
 // Promise tools
 
 const createPromise = (executor) => {
@@ -103,7 +170,6 @@ const createElementFromHtml = (html, props = {}) => {
   // Creates HTML element from 'outer' HTML with options,
   // add to parent and attach shadow root.
 
-
   html = getHtml(html);
   let element;
 
@@ -134,9 +200,6 @@ Object.defineProperty(HTMLElement.prototype, "parent", {
   },
   configurable: true,
 });
-
-
-
 
 HTMLElement.prototype.clear = function (slot) {
   if (slot === undefined) {
@@ -231,7 +294,7 @@ function setAttr(name, value) {
   if (value === null) {
     this.removeAttribute(name);
   } else if (value === undefined) {
-    this.setAttribute(name, '');
+    this.setAttribute(name, "");
   } else {
     this.setAttribute(name, value);
   }
@@ -239,42 +302,6 @@ function setAttr(name, value) {
 
 HTMLElement.prototype.setAttr = setAttr;
 ShadowRoot.prototype.setAttr = setAttr;
-
-// STYLE
-
-/**
- * Adds "stylesheets" to document or a shadow root.
- * @param {...string} paths - The paths of the stylesheets to add.
- * @throws {KeyError} If an invalid assets path is provided.
- */
-function addSheets(...paths) {
-  for (let path of paths) {
-    if (!path.endsWith(".css")) {
-      path = `${path}.css`;
-    }
-    // `_assets` is an object with `path` keys and CSS text as values.
-    if (!(path in assets)) {
-      throw new Error(`Invalid assets path: \`${path}\`.`);
-    }
-    const cssText = assets[path];
-    const sheet = new CSSStyleSheet();
-    sheet.replaceSync(cssText);
-    //sheet.replace(cssText);
-    this.adoptedStyleSheets = [...this.adoptedStyleSheets, sheet];
-  }
-}
-
-// Add `addSheets` as a method of `ShadowRoot.prototype`.
-ShadowRoot.prototype.addSheets = addSheets;
-// NOTE: Could be expanded to also work for document (would probably need to bind).
-
-/** Useful for adding small component-specific css snippets to document.
- * Should be invoked from component module. */
-document.addCss = (cssText) => {
-  const sheet = new CSSStyleSheet();
-  sheet.replaceSync(cssText);
-  document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
-};
 
 // EVENTS
 
@@ -291,7 +318,7 @@ function sendEvent(name, detail) {
 
 HTMLElement.prototype.sendEvent = sendEvent;
 ShadowRoot.prototype.sendEvent = sendEvent;
-window.sendEvent = sendEvent
+window.sendEvent = sendEvent;
 
 // COMPOSITION WITH CLASSES
 
@@ -315,7 +342,6 @@ function hide() {
 HTMLElement.prototype.hide = hide;
 ShadowRoot.prototype.hide = hide;
 
-
 // STRING
 
 // NOTE: The added string methods below do NOT change the original string.
@@ -324,43 +350,38 @@ const capitalize = (text) => {
   if (text.length > 0) {
     text = text[0].toUpperCase() + text.slice(1);
   }
-  return text
-}
+  return text;
+};
 
-
-String.prototype.capitalize = function() {
-  return capitalize(this)
-}
+String.prototype.capitalize = function () {
+  return capitalize(this);
+};
 
 const uncapitalize = (text) => {
   if (text.length > 0) {
     text = text[0].toLowerCase() + text.slice(1);
   }
-  return text
-}
+  return text;
+};
 
-String.prototype.uncapitalize = function() {
-  return uncapitalize(this)
-}
+String.prototype.uncapitalize = function () {
+  return uncapitalize(this);
+};
 
 const toCamel = (kebab) => {
   return kebab.replace(/-([a-z])/g, function (match, capture) {
     return capture.toUpperCase();
   });
-}
+};
 
-String.prototype.toCamel = function() {
-  return toCamel(this)
-}
-
+String.prototype.toCamel = function () {
+  return toCamel(this);
+};
 
 const toKebab = (camel) => {
-  return camel.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-}
+  return camel.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+};
 
-String.prototype.toKebab = function() {
-  return toKebab(this)
-}
-
-
-
+String.prototype.toKebab = function () {
+  return toKebab(this);
+};
