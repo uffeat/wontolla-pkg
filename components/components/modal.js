@@ -1,8 +1,9 @@
-const modal = async (content, kwargs = {}) => {
+import { setStyle } from "../../libs/bootstrap/utils/classes.js";
+
+const modal = (content, kwargs = {}) => {
   let {
     animated = true,
-    blocking = true,
-    buttonsConfig,
+    buttons,
     callback,
     dismissible = true,
     headline,
@@ -10,11 +11,14 @@ const modal = async (content, kwargs = {}) => {
     size,
   } = kwargs;
 
+  
+
   const component = createElement(`div.modal${animated ? ".fade" : ""}`, {
     innerHTML: getHtml("components/modal"),
     parent: document.body,
   });
   component.setAttribute("tabindex", "-1");
+  let modalValue;
 
   // Get subs
   const dialogElement = component.get(".modal-dialog");
@@ -22,13 +26,11 @@ const modal = async (content, kwargs = {}) => {
   const headlineElement = component.get(".modal-title");
   const dismissButton = component.get(".btn-close");
   const bodyElement = component.get(".modal-body");
-  const footerElement = self._component.get(".modal-footer");
+  const footerElement = component.get(".modal-footer");
 
   // Set dismissible. Must be done before creation of Bootstrap component.
   if (dismissible) {
     component.removeAttribute("data-bs-backdrop");
-    dismissButton._value = null;
-    dismissButton.onclick = onclickButton;
   } else {
     component.dataset.bsBackdrop = "static";
     dismissButton.hide();
@@ -39,14 +41,39 @@ const modal = async (content, kwargs = {}) => {
   // Set content
   if (typeof content === "string")
     content = createElement("p", { text: content });
-
-  body.append(self.content);
-  // Provide access to modal component from content:
-  content.modalParent = component;
+  bodyElement.append(content);
+  // Provide access to close modal from content:
+  component.addEventListener('x-close-modal', (event) => {
+    modalValue = event.detail
+    bsComponent.hide()
+  })
+  // Provide general access to modal elements from content
+  content.modalParent = component
 
   // Set buttons
-  if (buttonsConfig) {
-    
+  if (buttons) {
+    for (let b of buttons) {
+      const [text, value, style] = b;
+      if (value === undefined ) throw `The value 'undefined' is reserved for modal dismissal.`
+      const button = createElement(`button.btn`, {
+        text,
+        parent: footerElement,
+      });
+      button._value = value;
+      style && setStyle(button, "btn", style, false);
+      button.onclick = (event) => {
+        event.stopPropagation();
+        modalValue = button._value;
+        // Abort hide if callback returns falsy
+        if (callback && !callback(modalValue)) {
+          // Reset modalValue; modal may subsequently be closed by backdrop or dismiss button
+          // click, which should result in a modalValue of 'undefined'.
+          modalValue = undefined;
+          return;
+        }
+        bsComponent.hide();
+      }
+    }
   }
 
   // Set headline
@@ -59,7 +86,7 @@ const modal = async (content, kwargs = {}) => {
   if (!["modal-dialog-centered", "sb", undefined].includes(position))
     throw `Invalid position: ${position}`;
   // Add position-controlling class
-  if (position) dialog.classList.add(position);
+  if (position) dialogElement.classList.add(position);
   // undefined position -> Bootstrap default used.
 
   // Set size
@@ -69,8 +96,21 @@ const modal = async (content, kwargs = {}) => {
   if (!["sm", "lg", "xl", "fullscreen", undefined].includes(size))
     throw `Invalid size: ${size}`;
   // Add size-controlling class
-  if (size) dialog.classList.add(`modal-${size}`);
+  if (size) dialogElement.classList.add(`modal-${size}`);
   // undefined size -> Bootstrap default used.
 
-  function onclickButton(event) {}
+  bsComponent.show();
+
+  return new Promise((resolve, _reject) => {
+    component.addEventListener("hidden.bs.modal", (event) => {
+      // If modalValue is not undefined, callback has already been invoked in onclick.
+      if (callback && modalValue === undefined) callback();
+      resolve(modalValue);
+      component.remove();
+      bsComponent.dispose();
+    });
+  });
+  // NOTE If modal is called without 'await', callback still works.
 };
+
+export { modal };
