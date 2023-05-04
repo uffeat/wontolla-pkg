@@ -8,6 +8,7 @@ const modal = (content, kwargs = {}) => {
     dismissible = true,
     headline,
     position,
+    promise = true,
     size,
   } = kwargs;
 
@@ -99,6 +100,16 @@ const modal = (content, kwargs = {}) => {
   // undefined size -> Bootstrap default used.
 
   bsComponent.show();
+
+  if (!promise) {
+    component.addEventListener("hidden.bs.modal", (event) => {
+      // If modalValue is not undefined, callback has already been invoked in onclick.
+      if (callback && modalValue === undefined) callback();
+      component.remove();
+      bsComponent.dispose();
+    });
+    return
+  }
 
   return new Promise((resolve, _reject) => {
     component.addEventListener("hidden.bs.modal", (event) => {

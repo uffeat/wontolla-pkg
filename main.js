@@ -23,6 +23,8 @@ const result = await modal(content, {buttons: [['Yes', true], ['No', false]], ca
 console.log(`Result: ${result}`)
 //console.log(`HERE`)
 
+modal(content, {buttons: [['Yes', true], ['No', false]], callback, promise: false})
+
 
 /*
 const content = createElement('div', {innerHTML: `
