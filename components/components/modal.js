@@ -11,8 +11,6 @@ const modal = (content, kwargs = {}) => {
     size,
   } = kwargs;
 
-  
-
   const component = createElement(`div.modal${animated ? ".fade" : ""}`, {
     innerHTML: getHtml("components/modal"),
     parent: document.body,
@@ -43,18 +41,19 @@ const modal = (content, kwargs = {}) => {
     content = createElement("p", { text: content });
   bodyElement.append(content);
   // Provide access to close modal from content:
-  component.addEventListener('x-close-modal', (event) => {
-    modalValue = event.detail
-    bsComponent.hide()
-  })
+  component.addEventListener("x-close-modal", (event) => {
+    modalValue = event.detail;
+    bsComponent.hide();
+  });
   // Provide general access to modal elements from content
-  content.modalParent = component
+  content.modalParent = component;
 
   // Set buttons
   if (buttons) {
     for (let b of buttons) {
       const [text, value, style] = b;
-      if (value === undefined ) throw `The value 'undefined' is reserved for modal dismissal.`
+      if (value === undefined)
+        throw `The value 'undefined' is reserved for modal dismissal.`;
       const button = createElement(`button.btn`, {
         text,
         parent: footerElement,
@@ -72,7 +71,7 @@ const modal = (content, kwargs = {}) => {
           return;
         }
         bsComponent.hide();
-      }
+      };
     }
   }
 
