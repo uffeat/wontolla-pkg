@@ -2,7 +2,7 @@ const modal = async (content, kwargs = {}) => {
   let {
     animated = true,
     blocking = true,
-    buttons,
+    buttonsConfig,
     callback,
     dismissible = true,
     headline,
@@ -45,6 +45,9 @@ const modal = async (content, kwargs = {}) => {
   content.modalParent = component;
 
   // Set buttons
+  if (buttonsConfig) {
+    
+  }
 
   // Set headline
   headlineElement.text = headline || "";
