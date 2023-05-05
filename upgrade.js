@@ -107,11 +107,11 @@ window.getHtml = getHtml;
 
 // Function tools
 
-/*
-// handleKwargs is a nifty idea, but probably overkill.
-// If to be implemented, maybe justify its use by adding a type-checking feature?
 
-const handleKwargs = (kwargs, ...validKeys) => {
+// TODO Maybe add type-checking?
+// TODO May be add check of valid values (from array)?
+
+const checkKwargs = (kwargs, ...validKeys) => {
   if (kwargs) {
     if (validKeys.length > 0) {
       // Check keys.
@@ -127,8 +127,8 @@ const handleKwargs = (kwargs, ...validKeys) => {
   }
 };
 
-window.handleKwargs = handleKwargs;
-*/
+window.checkKwargs = checkKwargs;
+
 
 // Promise tools
 

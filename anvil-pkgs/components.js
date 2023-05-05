@@ -4,4 +4,4 @@ import * as _nav from "../components/components/nav.js";
 import * as _navbar from "../components/components/navbar.js";
 import * as _textInput from "../components/components/text-input.js";
 export { modal } from "../components/components/modal.js";
-export { show as show_toast } from "../components/components/toast.js";
+export { show as showToast } from "../components/components/toast.js";

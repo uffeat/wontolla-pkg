@@ -10,21 +10,30 @@ import { modal } from "./components/components/modal.js";
 //const result = await modal('called with await', {buttons: [['OK', true]]})
 //console.log(`Result: ${result}`)
 
-const content = createElement('div', {innerHTML: `
+const content = createElement("div", {
+  innerHTML: `
 <input type=checkbox />
-`})
-const checkbox = content.get('input')
+`,
+});
+const checkbox = content.get("input");
 const callback = (modalValue) => {
-  console.log(`Callback got modal value: ${modalValue}`)
-  if (checkbox.checked) return true
-}
+  console.log(`Callback got modal value: ${modalValue}`);
+  if (checkbox.checked) return true;
+};
 
-const result = await modal(content, {buttons: [['Yes', true], ['No', false]], callback})
-console.log(`Result: ${result}`)
+
+const result = await modal(content, {
+  buttons: [["Yes", true], ["No", false], ["42", 42], ],
+  callback,
+  dismissible: false, 
+  //headline: 'Modal mojo',
+  //position: 'sb',
+  size: 'lg',
+});
+console.log(`Result: ${result}`);
 //console.log(`HERE`)
 
-modal(content, {buttons: [['Yes', true], ['No', false]], callback, promise: false})
-
+//modal(content, {buttons: [['Yes', true], ['No', false]], callback, promise: false})
 
 /*
 const content = createElement('div', {innerHTML: `
@@ -37,4 +46,3 @@ content.addEventListener('x-modal-hide-request', (event) => {
 })
 modal(content, {buttons: [['OK', true]]})
 */
-
