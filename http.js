@@ -1,3 +1,5 @@
+import { genSearchParams } from "./utils/url.js";
+
 class Http {
   #base;
   constructor(base) {
@@ -16,6 +18,26 @@ class Http {
     });
 
     const response = await fetch(request);
+
+    if (response.ok) {
+      const result = await response.json();
+      callback && callback(result);
+      return result;
+    }
+  }
+
+  async get(name, kwargs, callback) {
+
+    console.log(`https://${this.#base}/_/api/get/${name}${genSearchParams(kwargs)}`)
+
+    const request = new Request(`https://${this.#base}/_/api/get/${name}${genSearchParams(kwargs)}`, {
+      method: "GET",
+      mode: "no-cors",
+    });
+
+    const response = await fetch(request);
+
+    console.log(response)
 
     if (response.ok) {
       const result = await response.json();

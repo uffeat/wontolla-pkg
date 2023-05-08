@@ -105,4 +105,4 @@ function genLocationHash(hashObject) {
 
 
 
-export {parseLocationHash, removeHash}
+export {genSearchParams, parseLocationHash, removeHash}
