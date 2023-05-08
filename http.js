@@ -9,11 +9,10 @@ class Http {
     const request = new Request(`https://${this.#base}/_/api/main/${name}`, {
       method: "POST",
       mode: "no-cors",
-      //body: JSON.stringify(kwargs),
-      body: kwargs,
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(kwargs),
     });
 
     const response = await fetch(request);
