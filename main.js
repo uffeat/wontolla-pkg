@@ -7,6 +7,20 @@ import * as _routes from "./router/routes.js";
 
 import { modal } from "./components/components/modal.js";
 
+import { Http } from "./http.js";
+
+const server = new Http('wontolla-client.anvil.app')
+
+const result = await server.call('test', {"number_1": 3, "number_2": 6})
+
+
+
+console.log(result);
+
+
+
+/*
+
 //const result = await modal('called with await', {buttons: [['OK', true]]})
 //console.log(`Result: ${result}`)
 
@@ -21,19 +35,24 @@ const callback = (modalValue) => {
   if (checkbox.checked) return true;
 };
 
-
 const result = await modal(content, {
-  buttons: [["Yes", true], ["No", false], ["42", 42], ],
+  buttons: [
+    ["Yes", true],
+    ["No", false],
+    ["42", 42],
+  ],
   callback,
-  dismissible: false, 
+  dismissible: false,
   //headline: 'Modal mojo',
   //position: 'sb',
-  size: 'lg',
+  size: "lg",
 });
 console.log(`Result: ${result}`);
 //console.log(`HERE`)
 
 //modal(content, {buttons: [['Yes', true], ['No', false]], callback, promise: false})
+
+*/
 
 /*
 const content = createElement('div', {innerHTML: `
