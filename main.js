@@ -7,22 +7,22 @@ import * as _routes from "./router/routes.js";
 
 import { modal } from "./components/components/modal.js";
 
+
+/*
 import { Http } from "./http.js";
 
 const server = new Http('wontolla-client.anvil.app')
 
 const result = await server.get('test', {"number_1": 3, "number_2": 6})
 
-
-
 console.log(result);
-
 
 const response = await fetch('https://wontolla-client.anvil.app/_/api/get/stuff');
 console.log(response)
 
 const res = await response.json();
 console.log(res)
+*/
 
 
 /*
