@@ -17,16 +17,37 @@ const call = async (name, callback, q) => {
   );
 
   const response = await fetch(request);
-  console.log(response);
+  //console.log(response);
 
-  const result = await response.json();
-  console.log(result);
-  callback && callback(result)
+  const contentType = response.headers.get("Content-Type");
+
+  if (contentType.includes("application/json")) {
+    const result = await response.json();
+    callback && callback(result);
+    return result;
+  } else if (contentType.includes("text/plain")) {
+    const result = await response.text();
+
+    try {
+      const resultJson = JSON.parse(result);
+      callback && callback(resultJson);
+      return resultJson;
+    } catch {
+      callback && callback(result);
+      return result;
+    }
+  } else {
+    callback && callback(400);
+    return 400;
+  }
 };
 
-const result = await call('test')
+const result = await call("test");
+console.log(`Result: ${JSON.stringify(result)}`)
 
-call('test', (result) => console.log(`Callback got result: ${JSON.stringify(result)}`))
+call("test", (result) =>
+  console.log(`Callback got result: ${JSON.stringify(result)}`)
+);
 
 /*
 
