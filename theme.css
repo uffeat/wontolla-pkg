@@ -1,0 +1,15 @@
+#appGoesHere {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+main {
+  flex-grow: 1;
+}
+
+footer {
+  min-height: 100px;
+  border-top: 1px solid var(--bs-border-color);
+}

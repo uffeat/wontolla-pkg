@@ -10,8 +10,8 @@ const setPage = async (name, kwargs = {}) => {
   document.main.clear().append(component);
 };
 
-routes.add("about", () => {
-  setPage("about");
+routes.add("account", () => {
+  setPage("account");
 });
 
 routes.add("blog-post", (kwargs, ...args) => {
@@ -26,6 +26,14 @@ routes.add("home", () => {
 
 routes.add("login", () => {
   setPage("login", { noHash: true });
+});
+
+routes.add("modal", () => {
+  setPage("modal");
+});
+
+routes.add("rpc", () => {
+  setPage("rpc");
 });
 
 routes.add("signup", () => {

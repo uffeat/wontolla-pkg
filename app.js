@@ -70,13 +70,8 @@ const navBar = createElement(
     "x-nav",
     { slot: "main" },
     // main nav links
-    createElement("a", { name: "blog", href: "#blog", text: "Blog" }),
-    createElement("a", {
-      name: "newsletter",
-      href: "#newsletter-signup",
-      text: "Newsletter",
-    }),
-    createElement("a", { name: "about", href: "#about", text: "About" })
+    createElement("a", { name: "modal", href: "#modal", text: "Modal" }),
+    createElement("a", { name: "rpc", href: "#rpc", text: "Rpc" }),
   ),
   // aux nav
   createElement(
