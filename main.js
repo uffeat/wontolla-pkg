@@ -7,31 +7,26 @@ import * as _routes from "./router/routes.js";
 
 import { modal } from "./components/components/modal.js";
 
+const call = async (name, callback, q) => {
+  const request = new Request(
+    `https://wontolla-client.anvil.app/_/api/post/${name}`,
+    {
+      method: "POST",
+      body: JSON.stringify(q),
+    }
+  );
 
-/*
-import { Http } from "./http.js";
-const server = new Http('wontolla-client.anvil.app')
-const result = await server.get('test', {"number_1": 3, "number_2": 6})
-console.log(result);
-const response = await fetch('https://wontolla-client.anvil.app/_/api/get/stuff');
-console.log(response)
-const res = await response.json();
-console.log(res)
-*/
+  const response = await fetch(request);
+  console.log(response);
 
-const request = new Request(`https://wontolla-client.anvil.app/_/api/post/test`, {
-  method: "POST",
-  body: JSON.stringify({ name: "Uffe" }),
-});
+  const result = await response.json();
+  console.log(result);
+  callback && callback(result)
+};
 
-const response = await fetch(request);
-console.log(response);
+const result = await call('test')
 
-const res = await response.json();
-console.log(res);
-
-
-
+call('test', (result) => console.log(`Callback got result: ${JSON.stringify(result)}`))
 
 /*
 
