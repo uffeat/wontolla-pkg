@@ -65,7 +65,7 @@ document.addSheets(
 
 // SCRIPTS
 
-const addedScripts = []
+const addedScripts = [];
 
 const addScripts = (...paths) => {
   for (let path of paths) {
@@ -76,17 +76,17 @@ const addScripts = (...paths) => {
       throw new Error(`Invalid assets path: \`${path}\`.`);
     }
     if (addedScripts.includes(path)) {
-      console.log(`Script '${path}' already added.`)
+      console.log(`Script '${path}' already added.`);
     }
     new Function(assets[path])();
-    addedScripts.push(path)
+    addedScripts.push(path);
   }
 };
 
 document.addScripts = addScripts;
 
 // Add global lib scripts
-document.addScripts('uikit/core', 'uikit/icons', "bootstrap/core");
+document.addScripts("uikit/core", "uikit/icons", "bootstrap/core");
 
 // GLOBAL FUNCS
 
@@ -106,7 +106,6 @@ function getHtml(arg) {
 window.getHtml = getHtml;
 
 // Function tools
-
 
 // TODO Maybe add type-checking?
 // TODO May be add check of valid values (from array)?
@@ -128,7 +127,6 @@ const checkKwargs = (kwargs, ...validKeys) => {
 };
 
 window.checkKwargs = checkKwargs;
-
 
 // Promise tools
 
@@ -298,6 +296,7 @@ function setAttr(name, value) {
   } else {
     this.setAttribute(name, value);
   }
+  return this; // Allows chaining and in-line application.
 }
 
 HTMLElement.prototype.setAttr = setAttr;
@@ -330,6 +329,7 @@ HTMLElement.prototype.compose = function (Composition, ...args) {
 
 function show() {
   this.classList.remove("d-none");
+  return this; // Allows chaining and in-line application.
 }
 
 HTMLElement.prototype.show = show;
@@ -337,6 +337,7 @@ ShadowRoot.prototype.show = show;
 
 function hide() {
   this.classList.add("d-none");
+  return this; // Allows chaining and in-line application.
 }
 
 HTMLElement.prototype.hide = hide;

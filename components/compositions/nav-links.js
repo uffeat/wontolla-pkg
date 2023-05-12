@@ -33,6 +33,10 @@ class NavLinks {
 
   /** Enables (visually and functionally) link by name. */
   enable(name) {
+
+    // TODO: disable or real
+
+
     this.get(name).classList.remove("disabled");
   }
 
