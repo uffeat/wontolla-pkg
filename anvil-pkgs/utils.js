@@ -1,1 +1,1 @@
-export { removeHash } from "../utils/url.js";
+export { genLocationHash, parseLocationHash, removeHash } from "../utils/url.js";

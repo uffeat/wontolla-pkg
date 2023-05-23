@@ -32,7 +32,6 @@ function removeHash() {
 
 
 function parseLocationHash() {
-  
 
   // Get the hash part of the URL without the leading '#'
   const hash = window.location.hash.slice(1);
@@ -65,7 +64,7 @@ function parseLocationHash() {
       result.query[key] = decodeURIComponent(value);
     }
   }
-  //console.log(`result: ${JSON.stringify(result)}`)
+  console.log(`result: ${JSON.stringify(result)}`)
   return result;
 }
 
@@ -105,4 +104,4 @@ function genLocationHash(hashObject) {
 
 
 
-export {genSearchParams, parseLocationHash, removeHash}
+export {genLocationHash, genSearchParams, parseLocationHash, removeHash}

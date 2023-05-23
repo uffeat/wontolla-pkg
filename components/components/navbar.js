@@ -81,12 +81,8 @@ window.customElements.define("x-navbar", Navbar);
 
 /* EXAMPLE USE OF NAV AND NAVBAR FROM JS
 
-const navbar = X.element.create("x-navbar", {
-  parent: document.root,
-});
 
-
-const navbar = X.element.create("x-navbar", {
+const navbar = create("x-navbar", {
   parent: document.root,
 });
 
