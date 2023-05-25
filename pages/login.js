@@ -23,7 +23,9 @@ const passwordComponent = createElement("x-text-input.col-md-6", {
   required: true,
 });
 
-component.subs.form.addControl(emailComponent, passwordComponent);
+component.subs.form.addControls(emailComponent, passwordComponent);
+
+
 component.subs.form.showValid = false;
 
 component.subs.form.action = (form) => {
@@ -40,17 +42,14 @@ component.subs.form.action = (form) => {
     return email === 'w@w' && password === 'w'
   }
 
-
-
-  if (!validateCredentials(emailComponent.value, passwordComponent.value)) {
+  if (!validateCredentials(form.getValue('email'), form.getValue('password'))) {
     console.log(`Invalid credentials.`);
-    emailComponent.customValidity = passwordComponent.customValidity =
+    form.getControl('email').customValidity = form.getControl('password').customValidity =
       "Invalid credentials";
 
-    emailComponent.customOnInput = passwordComponent.customOnInput = () => {
-      emailComponent.customValidity = passwordComponent.customValidity = true;
+      form.getControl('email').customOnInput = form.getControl('password').customOnInput = () => {
+        form.getControl('email').customValidity = form.getControl('password').customValidity = true;
     };
-
 
     const msg = "Invalid credentials"
     form.alert.show(msg, {headline: 'Something went wrong', styleName: 'danger'});
@@ -59,10 +58,10 @@ component.subs.form.action = (form) => {
     return;
   }
 
-  showToast(`${emailComponent.value} is logged in.`, {headline: "Log-in success", styleName: 'success'})
+  showToast(`${form.getValue('email')} is logged in.`, {headline: "Log-in success", styleName: 'success'})
   // Set global state
   state.setValue("loggedin", true);
-  state.setValue("user", {email: emailComponent.value});
+  state.setValue("user", {email: form.getValue('email')});
   // Reset form (in case of logout-login)
   form.resetValidation();
   form.clearData()

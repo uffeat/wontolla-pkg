@@ -1,1 +1,0 @@
-export {onhashchange, routes} from '../router/router.js'

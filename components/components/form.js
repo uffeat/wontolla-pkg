@@ -11,8 +11,9 @@ class Form extends mixin(HTMLElement) {
     composeSubs(this);
     // `this.subs.form` has class `row`; added control can be styled with col-classes.
 
-    // Expose alert component to public interface (other than via `subs`)
+    // Expose selected subs to public interface (other than via `subs`)
     this.alert = this.subs.alert;
+    this.aux = this.subs.aux;
 
     // Set event handlers
     this.subs.submitButton.addEventListener("click", (event) => {
@@ -37,14 +38,42 @@ class Form extends mixin(HTMLElement) {
     this.#action = action;
   }
 
+  // CONTROLS
+
   get controls() {
     return this.root.getAll(".x-control");
   }
 
   set controls(controls) {
-    this.clear();
-    this.add(...controls);
+    this.clearControls;
+    this.addControl(...controls);
   }
+
+  addControl(control, ...cssClasses) {
+    if (cssClasses.length === 0) {
+      cssClasses=["col-md-6"]
+    }
+    control.classList.add("x-control", ...cssClasses);
+    this.subs.form.append(control);
+  }
+
+  addControls(...controls) {
+    controls = controls.map((control) => {
+      control.classList.add("x-control", "col-md-6");
+      return control;
+    });
+    this.subs.form.append(...controls);
+  }
+
+  clearControls() {
+    this.subs.form.clear();
+  }
+
+  getControl(name) {
+    return this.subs.form.get(`.x-control[name=${name}]`);
+  }
+
+  // DATA/VALUES
 
   get data() {
     const data = {};
@@ -62,6 +91,26 @@ class Form extends mixin(HTMLElement) {
     });
   }
 
+  clearData() {
+    this.controls.forEach((control) => {
+      control.value = null;
+    });
+  }
+
+  getValue(name) {
+    const control = this.getControl(name);
+    if (control) return control.value;
+  }
+
+  setValue(name, value) {
+    const control = this.getControl(name);
+    if (control) {
+      control.value = value;
+    }
+  }
+
+  // VALIDATION
+
   get showValid() {
     return !this.subs.form.classList.contains("no-show-valid");
   }
@@ -78,50 +127,18 @@ class Form extends mixin(HTMLElement) {
     throw `'valid' is read-only.`;
   }
 
-  addControl(...controls) {
-    controls = controls.map((control) => {
-      control.classList.add("x-control", "col-md-6");
-      return control;
-    });
-    this.subs.form.append(...controls);
-  }
-
-  clearControls() {
-    this.subs.form.clear();
-  }
-
-  clearData() {
-    this.controls.forEach((control) => {
-     control.value = null
-    });
-  }
-
-  getControl(name) {
-    return this.subs.form.get(`.x-control[name=${name}]`);
-  }
-
-  getValue(name) {
-    const control = this.getControl(name);
-    if (control) return control.value;
-  }
-
   resetValidation() {
     this.alert.hide();
     this.subs.form.classList.remove("was-validated");
   }
 
-  validate(kwargs = {}) {
-    //const {  } = kwargs;
-    //this.resetValidation()
-
+  validate() {
     this.subs.form.classList.add("needs-validation");
-
     this.subs.form.checkValidity();
 
     this.controls.forEach((control) => {
       if (!control.valid) {
         control.setInvalidFeedbackFromValidity();
-
         control.liveValidation = true;
       } else {
         control.liveValidation = false;
@@ -129,7 +146,6 @@ class Form extends mixin(HTMLElement) {
     });
 
     this.subs.form.classList.add("was-validated");
-
     return this.valid;
   }
 }

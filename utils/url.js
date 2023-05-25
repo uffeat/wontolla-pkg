@@ -1,5 +1,5 @@
 /** Returns decoded search object from encoded search params string. */
-function genSearchObj(encodedSearchParams) {
+const genSearchObj = (encodedSearchParams) => {
   const searchObj = {};
   // Remove leading '?' if present
   if (encodedSearchParams.startsWith('?')) {
@@ -16,7 +16,7 @@ function genSearchObj(encodedSearchParams) {
 
 
 /** Returns encoded search params string form search object. */
-function genSearchParams(searchObj) {
+const genSearchParams = (searchObj) => {
   const urlParams = new URLSearchParams();
   for (const [key, value] of Object.entries(searchObj)) {
     urlParams.set(key, value);
@@ -25,13 +25,13 @@ function genSearchParams(searchObj) {
 }
 
 /**  Removes hash from `window.location` */
-function removeHash() {
+const removeHash = () =>{
   const url = window.location.toString().split("#")[0];
   window.history.replaceState({}, "", url);
 }
 
 
-function parseLocationHash() {
+const parseLocationHash = () => {
 
   // Get the hash part of the URL without the leading '#'
   const hash = window.location.hash.slice(1);
@@ -64,11 +64,11 @@ function parseLocationHash() {
       result.query[key] = decodeURIComponent(value);
     }
   }
-  console.log(`result: ${JSON.stringify(result)}`)
+  //console.log(`result: ${JSON.stringify(result)}`)
   return result;
 }
 
-function genLocationHash(hashObject) {
+const genLocationHash = (hashObject) => {
   // Initialize the result hash string
   let hash = '';
 
@@ -104,4 +104,4 @@ function genLocationHash(hashObject) {
 
 
 
-export {genLocationHash, genSearchParams, parseLocationHash, removeHash}
+export {genLocationHash, genSearchObj, genSearchParams, parseLocationHash, removeHash}

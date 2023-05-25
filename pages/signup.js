@@ -21,7 +21,7 @@ const passwordComponent2 = createElement("x-text-input.col-md-6", {
   required: true,
 });
 
-component.subs.form.addControl(passwordComponent, passwordComponent2);
+component.subs.form.addControls(passwordComponent, passwordComponent2);
 component.subs.form.showValid = false;
 
 component.subs.form.action = (form) => {

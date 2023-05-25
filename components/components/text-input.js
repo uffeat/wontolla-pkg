@@ -20,7 +20,8 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
     // Link label and input
     this.subs.input.id = uid.gen("textInput");
     this.subs.label.setAttr("for", this.subs.input.id);
-    // Set defaults
+    // Expose selected subs to public interface (other than via `subs`)
+    this.input = this.subs.input;
   }
 
   connectedCallback() {
