@@ -24,6 +24,18 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
     this.input = this.subs.input;
   }
 
+  update(props) {
+    for (const [name, value] of Object.entries(props)) {
+      if (name in this) {
+        this[name] = value;
+      } else if (name in this.style) {
+        this.style[name] = value;
+      } else {
+        this.input.updateProps({ name: value });
+      }
+    }
+  }
+
   connectedCallback() {
     this.addRoot();
     // Make component DOM-searchable by name
@@ -139,7 +151,7 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
   }
 
   setInvalidFeedbackFromValidity() {
-    console.log(`setInvalidFeedbackFromValidity running`);
+    //console.log(`setInvalidFeedbackFromValidity running`);
 
     if (this.subs.input.validity.valueMissing) {
       this.invalidFeedback = "Required";
@@ -151,7 +163,7 @@ class TextInput extends mixin(HTMLElement, EventHandlerMixin, SyncAttrMixin) {
   }
 
   _oninput() {
-    console.log(`oninput running`);
+    //console.log(`oninput running`);
     this.customOnInput && this.customOnInput();
     this.setInvalidFeedbackFromValidity();
   }
